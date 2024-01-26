@@ -1,7 +1,8 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-import { error } from 'console'
+// Import your routes here if you have them in separate files
+// e.g., import artistsRouter from './routes/artists.js';
 
 dotenv.config()
 
@@ -19,6 +20,14 @@ mongoose
 
 // Middleware
 app.use(express.json()) // This allows us to acccept JSON in requests.
+
+// Basic route for the homepage
+app.get('/', (req, res) => {
+  res.send('Welcome to the Wastelanders API!')
+})
+
+//API Routes
+// e.g., app.use('/api/artist', artistsRouter);
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
