@@ -1,5 +1,5 @@
 import express from 'express'
-import Artist from '../models/Artist'
+import Artist from '../models/Artist.js'
 
 const router = express.Router()
 
@@ -33,6 +33,48 @@ router.post('/', async (req, res) => {
     res.status(201).json(newArtist)
   } catch (error) {
     res.status(400).json({ message: error.message })
+  }
+})
+
+// Update an artist by id
+router.put('/:id', getArtist, async (req, res) => {
+  if (req.body.name != null) {
+    res.artist.name = req.body.name
+  }
+
+  if (req.body.bio != null) {
+    res.artist.bio = req.body.bio
+  }
+
+  if (req.body.profilePicture != null) {
+    res.artist.profilePicture = req.body.profilePicture
+  }
+
+  if (req.body.socialMediaLinks != null) {
+    res.artist.socialMediaLinks = req.body.socialMediaLinks
+  }
+
+  if (req.body.website != null) {
+    res.artist.website = req.body.website
+  }
+
+  // Add checks and updates for other fields as necessary
+
+  try {
+    const updatedArtist = await res.artist.save()
+    res.json(updatedArtist)
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+})
+
+// Delete an artist by id
+router.delete('/:id', getArtist, async (req, res) => {
+  try {
+    await res.artist.remove()
+    res.json({ message: 'Deleted Artist' })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
   }
 })
 

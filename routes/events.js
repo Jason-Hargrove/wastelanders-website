@@ -37,6 +37,52 @@ router.post('/', async (req, res) => {
   }
 })
 
+// Update an event by id
+router.put('/:id', getEvent, async (req, res) => {
+  if (req.body.title != null) {
+    res.event.title = req.body.title
+  }
+
+  if (req.body.description != null) {
+    res.event.description = req.body.description
+  }
+
+  if (req.body.location != null) {
+    res.event.location = req.body.location
+  }
+
+  if (req.body.date != null) {
+    res.event.date = req.body.date
+  }
+
+  if (req.body.time != null) {
+    res.event.time = req.body.time
+  }
+
+  if (req.body.participatingArtists != null) {
+    res.event.participatingArtists = req.body.participatingArtists
+  }
+
+  // Add checks and updates for other fields as necessary
+
+  try {
+    const updatedEvent = await res.event.save()
+    res.json(updatedEvent)
+  } catch (error) {
+    res.status(400).json({ message: error.message })
+  }
+})
+
+// Delete an artwork by id
+router.delete('/:id', getArtwork, async (req, res) => {
+  try {
+    await res.artwork.remove()
+    res.json({ message: 'Deleted Artwork' })
+  } catch (error) {
+    res.status(500).json({ message: error.message })
+  }
+})
+
 // Middleware to get event by ID
 async function getEvent(req, res, next) {
   let event

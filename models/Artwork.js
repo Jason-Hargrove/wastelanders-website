@@ -6,6 +6,7 @@ const ArtworkSchema = new mongoose.Schema({
     required: true,
   },
   description: String,
+  size: String,
   creationDate: Date,
   images: [String], // List of URLs to images of the artwork
   artist: {
