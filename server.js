@@ -1,8 +1,11 @@
 import express from 'express'
 import mongoose from 'mongoose'
 import dotenv from 'dotenv'
-// Import your routes here if you have them in separate files
-// e.g., import artistsRouter from './routes/artists.js';
+import cors from 'cors'
+// Routes
+import artistsRouter from './routes/artists.js'
+import artworksRouter from './routes/artworks.js'
+import eventsRouter from './routes/events.js'
 
 dotenv.config()
 
@@ -19,6 +22,7 @@ mongoose
   .catch((err) => console.log(err))
 
 // Middleware
+app.use(cors()) // Eable CORS for all routes
 app.use(express.json()) // This allows us to acccept JSON in requests.
 
 // Basic route for the homepage
@@ -27,7 +31,9 @@ app.get('/', (req, res) => {
 })
 
 //API Routes
-// e.g., app.use('/api/artist', artistsRouter);
+app.use('/api/artists', artistsRouter)
+app.use('/api/artworks', artworksRouter)
+app.use('/api/events', eventsRouter)
 
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`)
