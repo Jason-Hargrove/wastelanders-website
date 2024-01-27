@@ -69,10 +69,13 @@ router.put('/:id', getArtist, async (req, res) => {
 })
 
 // Delete an artist by id
-router.delete('/:id', getArtist, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    await res.artist.remove()
-    res.json({ message: 'Deleted Artist' })
+    const deletedArtist = await Artist.findByIdAndDelete(req.params.id)
+    if (!deletedArtist) {
+      return res.status(404).json({ message: 'Can not find artist' })
+    }
+    res.json({ message: 'Deleted Artist', artist: deletedArtist })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }

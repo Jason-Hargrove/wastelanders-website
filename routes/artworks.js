@@ -46,6 +46,10 @@ router.put('/:id', getArtwork, async (req, res) => {
     res.artwork.description = req.body.description
   }
 
+  if (req.body.size != null) {
+    res.artwork.size = req.body.size
+  }
+
   if (req.body.creationDate != null) {
     res.artwork.creationDate = req.body.creationDate
   }
@@ -69,10 +73,13 @@ router.put('/:id', getArtwork, async (req, res) => {
 })
 
 // Delete an artwork by id
-router.delete('/:id', getArtwork, async (req, res) => {
+router.delete('/:id', async (req, res) => {
   try {
-    await res.artwork.remove()
-    res.json({ message: 'Deleted Artwork' })
+    const deletedArtwork = await Artwork.findByIdAndDelete(req.params.id)
+    if (!deletedArtwork) {
+      return res.status(404).json({ message: 'Can not find artwork' })
+    }
+    res.json({ message: 'Deleted Artwork', artwork: deletedArtwork })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }

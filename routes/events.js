@@ -73,11 +73,14 @@ router.put('/:id', getEvent, async (req, res) => {
   }
 })
 
-// Delete an artwork by id
-router.delete('/:id', getArtwork, async (req, res) => {
+// Delete an event by id
+router.delete('/:id', async (req, res) => {
   try {
-    await res.artwork.remove()
-    res.json({ message: 'Deleted Artwork' })
+    const deletedEvent = await Event.findByIdAndDelete(req.params.id)
+    if (!deletedEvent) {
+      return res.status(404).json({ message: 'Can not find Event' })
+    }
+    res.json({ message: 'Deleted Event', event: deletedEvent })
   } catch (error) {
     res.status(500).json({ message: error.message })
   }
